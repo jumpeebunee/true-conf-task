@@ -4,10 +4,17 @@
       <MainElevator 
         v-for="elevator in elevators"
         @changeStack="changeStack"
-        :key="elevator" 
+        @changeCurrent="changeCurrent"
+        :current="current"
         :elevator="elevator" 
         :floors="floors"
         :stack="stack"
+        :key="elevator" 
+      />
+      <MainButtons
+        @pushToStack="pushToStack"
+        :stack="stack"
+        :floors="floors"
       />
     </div>
   </main>
@@ -15,6 +22,7 @@
 
 <script>
 import MainElevator from './components/MainElevator.vue';
+import MainButtons from './components/MainButtons.vue';
 
 export default {
   data() {
@@ -22,12 +30,20 @@ export default {
       elevators: 1,
       floors: 5,
       stack: [],
+      current: 1,
     }
   },
-  components: { MainElevator },
+  components: { MainElevator, MainButtons },
   methods: {
     changeStack() {
       this.stack.shift();
+    },
+    changeCurrent(val) {
+      this.current = val;
+    },
+    pushToStack(val) {
+      if (this.current === val || this.stack.includes(val)) return;
+      this.stack.push(val);
     }
   }
 }
@@ -44,5 +60,10 @@ export default {
   body {
     background-color: #1E1A20;
   }
+
+  .container  {
+    display: flex;
+  }
+
 
 </style>

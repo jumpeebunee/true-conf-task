@@ -1,15 +1,15 @@
 <template>
     <div class="shaft">
-        <li v-for="floor in floors" :key="floor" class="floor"></li>
+        <li v-for="floor in floors" :key="floor" class="floor">{{floor}}</li>
         <div
             :style="{'bottom': `${(current - 1)* 216}px`,
             'transition-duration': `${time.toString()[0]}s`}"
             :class="{'elevator elevator-animation': isDoors, 'elevator': !isDoors}"
         >
           <div class="floor__panel">
-            <div v-show="isRun" class="floor__panel-content">
-              <div class="floor__icon floor__up" v-if="prev < current"></div>
-              <div class="floor__icon floor__down" v-else></div>
+            <div class="floor__panel-content">
+              <div class="floor__icon floor__up" v-if="prev < current && isRun"></div>
+              <div class="floor__icon floor__down" v-else-if="isRun"></div>
               <div class="current-floor">{{current}}</div>
             </div>
           </div>
@@ -21,14 +21,13 @@
 export default {
   data() {
     return {
-      current: 1,
       prev: 0,
       time: 3000,
       isDoors: false,
       isRun: false,
     }
   },
-  props: ['elevator', 'floors', 'stack'],
+  props: ['elevator', 'floors', 'stack', 'current'],
   methods: {
     startElevator() {
       this.prev = this.current;
@@ -38,7 +37,7 @@ export default {
       let t = setInterval(() => {
         this.isDoors = false;
         this.isRun = true;
-        this.current = this.stack[0];
+        this.$emit('changeCurrent', this.stack[0]);
         clearInterval(t);
 
         let nextFloorT = setInterval(() => {
@@ -67,17 +66,23 @@ export default {
 
   @keyframes blinker {
     50% {
-      opacity: 0;
+      background-color: black;
     }
   }
   .floor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 216px;
     height: 216px;
     border: solid 1px #fff;
     list-style: none;
+    font-size: 24px;
   }
 
   .shaft {
+    display: flex;
+    flex-direction: column-reverse;
     position: relative;
   }
   .elevator {
