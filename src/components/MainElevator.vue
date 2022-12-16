@@ -25,11 +25,11 @@ export default {
       isRun: false,
     }
   },
-  props: ['elevator', 'floors', 'stack', 'current'],
+  props: ['elevator', 'floors', 'queue', 'current'],
   methods: {
     startElevator() {
       this.prev = this.current;
-      this.time = +`${Math.abs(this.current - this.stack[0])}000`;
+      this.time = +`${Math.abs(this.current - this.queue[0])}000`;
       this.isDoors = true;
 
       localStorage.setItem('prev', this.prev);
@@ -38,27 +38,27 @@ export default {
       let t = setInterval(() => {
         this.isDoors = false;
         this.isRun = true;
-        this.$emit('changeCurrent', this.stack[0]);
+        this.$emit('changeCurrent', this.queue[0]);
         clearInterval(t);
 
         let nextFloorT = setInterval(() => {
           clearInterval(nextFloorT);
           this.isRun = false;
-          this.$emit('changeStack');
-          if (this.stack.length > 1)  this.startElevator();
+          this.$emit('changeQueue');
+          if (this.queue.length > 1)  this.startElevator();
         }, this.time);
       }, 3000);
     },
   },
   mounted() {
-    if (this.stack.length > 0) {
+    if (this.queue.length > 0) {
       this.startElevator();
     }
   },
   watch: {
-    stack: {
+    queue: {
         handler() {
-          if (this.stack.length === 1 && !this.isRun) {
+          if (this.queue.length === 1 && !this.isRun) {
             this.startElevator();
           }
         },

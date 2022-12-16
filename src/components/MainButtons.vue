@@ -1,17 +1,17 @@
 <template>
   <ul class="btns__list">
     <li v-for="floor in floors" :key="floor">
-      <button @click="pushToStack(floor)"><div class="btns__list-btn" :class="{'btns__list-btn active': stack.includes(floor)}"></div></button>
+      <button @click="pushToQueue(floor)"><div class="btns__list-btn" :class="{'btns__list-btn active': queue.includes(floor)}"></div></button>
     </li>
   </ul>
 </template>
 
 <script>
 export default {
-  props: ['stack', 'floors'],
+  props: ['queue', 'floors'],
   methods: {
-    pushToStack(val) {
-      this.$emit('pushToStack', val);
+    pushToQueue(val) {
+      this.$emit('pushToQueue', val);
     }
   }
 }

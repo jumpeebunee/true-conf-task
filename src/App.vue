@@ -4,17 +4,17 @@
       <div class="elevator__content">
         <MainElevator 
           v-for="elevator in elevators"
-          @changeStack="changeStack"
+          @changeQueue="changeQueue"
           @changeCurrent="changeCurrent"
           :current="current"
           :elevator="elevator" 
           :floors="floors"
-          :stack="stack"
+          :queue="queue"
           :key="elevator" 
         />
         <MainButtons
-          @pushToStack="pushToStack"
-          :stack="stack"
+          @pushToQueue="pushToQueue"
+          :queue="queue"
           :floors="floors"
         />
       </div>
@@ -38,27 +38,27 @@ export default {
     return {
       elevators: 1,
       floors: +localStorage.getItem('floors') || 5,
-      stack: JSON.parse(localStorage.getItem('stack')) || [],
+      queue: JSON.parse(localStorage.getItem('queue')) || [],
       current: +localStorage.getItem('current') || 1,
       unActive: false,
     }
   },
   components: { MainElevator, MainButtons, ChangeFloors },
   methods: {
-    changeStack() {
-      this.stack.shift();
-      localStorage.setItem('stack', JSON.stringify(this.stack));
-      if (this.stack.length === 0) this.unActive = false;
+    changeQueue() {
+      this.queue.shift();
+      localStorage.setItem('queue', JSON.stringify(this.queue));
+      if (this.queue.length === 0) this.unActive = false;
+    },
+    pushToQueue(val) {
+      if (this.current === val || this.queue.includes(val)) return;
+      this.unActive = true;
+      this.queue.push(val);
+      localStorage.setItem('queue', JSON.stringify(this.queue));
     },
     changeCurrent(val) {
       this.current = val;
       localStorage.setItem('current', this.current);
-    },
-    pushToStack(val) {
-      if (this.current === val || this.stack.includes(val)) return;
-      this.unActive = true;
-      this.stack.push(val);
-      localStorage.setItem('stack', JSON.stringify(this.stack));
     },
     addFloor() {
       this.floors += 1;
@@ -66,7 +66,7 @@ export default {
     },
     removeFloor() {
       if (this.floors === this.current) {
-        this.pushToStack(this.floors - 1);
+        this.pushToQueue(this.floors - 1);
       }
       this.floors -= 1;
       localStorage.setItem('floors', this.floors);
