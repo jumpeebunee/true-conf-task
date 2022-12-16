@@ -1,11 +1,19 @@
 <template>
   <main>
     <div class="container">
+      <MainElevator 
+        v-for="elevator in elevators"
+        :key="elevator" 
+        :elevator="elevator" 
+        :floors="floors"
+      />
     </div>
   </main>
 </template>
 
 <script>
+import MainElevator from './components/MainElevator.vue';
+
 export default {
   data() {
     return {
@@ -13,7 +21,8 @@ export default {
       floors: 5,
       stack: [],
     }
-  }
+  },
+  components: { MainElevator },
 }
 </script>
 
