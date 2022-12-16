@@ -29,21 +29,24 @@ export default {
     return {
       elevators: 1,
       floors: 5,
-      stack: [],
-      current: 1,
+      stack: JSON.parse(localStorage.getItem('stack')) || [],
+      current: +localStorage.getItem('current') || 1,
     }
   },
   components: { MainElevator, MainButtons },
   methods: {
     changeStack() {
       this.stack.shift();
+      localStorage.setItem('stack', JSON.stringify(this.stack));
     },
     changeCurrent(val) {
       this.current = val;
+      localStorage.setItem('current', this.current);
     },
     pushToStack(val) {
       if (this.current === val || this.stack.includes(val)) return;
       this.stack.push(val);
+      localStorage.setItem('stack', JSON.stringify(this.stack));
     }
   }
 }
