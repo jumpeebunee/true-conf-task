@@ -21,6 +21,8 @@
       <ChangeFloors 
         @addFloor="addFloor"
         @removeFloor="removeFloor"
+        :unActive="unActive"
+        :floors="floors"
       />
     </div>
   </main>
@@ -38,12 +40,14 @@ export default {
       floors: +localStorage.getItem('floors') || 5,
       stack: JSON.parse(localStorage.getItem('stack')) || [],
       current: +localStorage.getItem('current') || 1,
+      unActive: false,
     }
   },
   components: { MainElevator, MainButtons, ChangeFloors },
   methods: {
     changeStack() {
       this.stack.shift();
+      if (this.stack.length === 0) this.unActive = false;
       localStorage.setItem('stack', JSON.stringify(this.stack));
     },
     changeCurrent(val) {
@@ -52,6 +56,7 @@ export default {
     },
     pushToStack(val) {
       if (this.current === val || this.stack.includes(val)) return;
+      this.unActive = true;
       this.stack.push(val);
       localStorage.setItem('stack', JSON.stringify(this.stack));
     },

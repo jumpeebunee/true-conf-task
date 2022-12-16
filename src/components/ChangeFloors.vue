@@ -4,7 +4,7 @@
     <p>Дополнительные лифты добавить нельзя, но можно добавить количесто этажей</p>
     <div class="elevator__description-btns">
       <button @click="this.$emit('addFloor')">+</button>
-      <button @click="this.$emit('removeFloor')">-</button>
+      <button :class="{'unActive': unActive || floors === 1}" :disabled="unActive || floors === 1" @click="this.$emit('removeFloor')">-</button>
     </div>
   </div>
 </template>
@@ -13,7 +13,8 @@
 export default {
   data() {
     return {}
-  }
+  },
+  props: ['floors', 'unActive'],
 } 
 </script>
 
@@ -51,6 +52,12 @@ export default {
       font-size: 24px;
       line-height: 29px;
       color: #FFFFFF;
+      transition: background .4s ease;
+    }
+
+    .unActive {
+      background: #973B3C;
     }
   }
+
 </style>
