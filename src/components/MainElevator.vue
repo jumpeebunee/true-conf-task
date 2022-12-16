@@ -45,7 +45,7 @@ export default {
           clearInterval(nextFloorT);
           this.isRun = false;
           this.$emit('changeStack');
-          if (this.stack.length >= 1) this.startElevator();
+          if (this.stack.length > 1)  this.startElevator();
         }, this.time);
       }, 3000);
     },
@@ -58,7 +58,7 @@ export default {
   watch: {
     stack: {
         handler() {
-          if (this.stack.length === 1) {
+          if (this.stack.length === 1 && !this.isRun) {
             this.startElevator();
           }
         },

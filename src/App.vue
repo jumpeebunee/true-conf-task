@@ -47,8 +47,8 @@ export default {
   methods: {
     changeStack() {
       this.stack.shift();
-      if (this.stack.length === 0) this.unActive = false;
       localStorage.setItem('stack', JSON.stringify(this.stack));
+      if (this.stack.length === 0) this.unActive = false;
     },
     changeCurrent(val) {
       this.current = val;
