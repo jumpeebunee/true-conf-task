@@ -28,7 +28,38 @@ export default {
       isRun: false,
     }
   },
-  props: ['elevator', 'floors',],
+  props: ['elevator', 'floors', 'stack'],
+  methods: {
+    startElevator() {
+      this.prev = this.current;
+      this.time = +`${Math.abs(this.current - this.stack[0])}000`;
+      this.isDoors = true;
+
+      let t = setInterval(() => {
+        this.isDoors = false;
+        this.isRun = true;
+        this.current = this.stack[0];
+        clearInterval(t);
+
+        let nextFloorT = setInterval(() => {
+          clearInterval(nextFloorT);
+          this.isRun = false;
+          this.$emit('changeStack');
+          if (this.stack.length >= 1) this.startElevator();
+        }, this.time);
+      }, 3000);
+    },
+  },
+  watch: {
+    stack: {
+        handler() {
+          if (this.stack.length === 1) {
+            this.startElevator();
+          }
+        },
+      deep: true
+    }
+  }
 }
 </script>
 

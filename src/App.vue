@@ -3,9 +3,11 @@
     <div class="container">
       <MainElevator 
         v-for="elevator in elevators"
+        @changeStack="changeStack"
         :key="elevator" 
         :elevator="elevator" 
         :floors="floors"
+        :stack="stack"
       />
     </div>
   </main>
@@ -23,6 +25,11 @@ export default {
     }
   },
   components: { MainElevator },
+  methods: {
+    changeStack() {
+      this.stack.shift();
+    }
+  }
 }
 </script>
 
