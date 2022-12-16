@@ -6,13 +6,11 @@
             'transition-duration': `${time.toString()[0]}s`}"
             :class="{'elevator elevator-animation': isDoors, 'elevator': !isDoors}"
         >
-          <div class="floor__panel">
-            <div class="floor__panel-content">
-              <div class="floor__icon floor__up" v-if="prev < current && isRun"></div>
-              <div class="floor__icon floor__down" v-else-if="isRun"></div>
-              <div class="current-floor">{{current}}</div>
-            </div>
-          </div>
+        <div class="floor__panel">
+          <div class="floor__icon floor__up" v-if="prev < current && isRun"></div>
+          <div class="floor__icon floor__down" v-else-if="isRun"></div>
+          <div class="current-floor">{{current}}</div>
+        </div>
         </div>
     </div>
 </template>
@@ -105,19 +103,16 @@ export default {
   }
 
   .floor__panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
     margin-top: 18px;
     width: 60px;
     height: 26px;
     background: #fff;
     border: solid 2px #1E1A20;
     border-radius: 4px;
-  }
-
-  .floor__panel-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
   }
 
   .current-floor {
