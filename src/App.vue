@@ -1,20 +1,26 @@
 <template>
   <main>
     <div class="container">
-      <MainElevator 
-        v-for="elevator in elevators"
-        @changeStack="changeStack"
-        @changeCurrent="changeCurrent"
-        :current="current"
-        :elevator="elevator" 
-        :floors="floors"
-        :stack="stack"
-        :key="elevator" 
-      />
-      <MainButtons
-        @pushToStack="pushToStack"
-        :stack="stack"
-        :floors="floors"
+      <div class="elevator__content">
+        <MainElevator 
+          v-for="elevator in elevators"
+          @changeStack="changeStack"
+          @changeCurrent="changeCurrent"
+          :current="current"
+          :elevator="elevator" 
+          :floors="floors"
+          :stack="stack"
+          :key="elevator" 
+        />
+        <MainButtons
+          @pushToStack="pushToStack"
+          :stack="stack"
+          :floors="floors"
+        />
+      </div>
+      <ChangeFloors 
+        @addFloor="addFloor"
+        @removeFloor="removeFloor"
       />
     </div>
   </main>
@@ -23,17 +29,18 @@
 <script>
 import MainElevator from './components/MainElevator.vue';
 import MainButtons from './components/MainButtons.vue';
+import ChangeFloors from './components/ChangeFloors.vue';
 
 export default {
   data() {
     return {
       elevators: 1,
-      floors: 5,
+      floors: +localStorage.getItem('floors') || 5,
       stack: JSON.parse(localStorage.getItem('stack')) || [],
       current: +localStorage.getItem('current') || 1,
     }
   },
-  components: { MainElevator, MainButtons },
+  components: { MainElevator, MainButtons, ChangeFloors },
   methods: {
     changeStack() {
       this.stack.shift();
@@ -47,6 +54,17 @@ export default {
       if (this.current === val || this.stack.includes(val)) return;
       this.stack.push(val);
       localStorage.setItem('stack', JSON.stringify(this.stack));
+    },
+    addFloor() {
+      this.floors += 1;
+      localStorage.setItem('floors', this.floors);
+    },
+    removeFloor() {
+      if (this.floors === this.current) {
+        this.pushToStack(this.floors - 1);
+      }
+      this.floors -= 1;
+      localStorage.setItem('floors', this.floors);
     }
   }
 }
@@ -66,6 +84,12 @@ export default {
 
   .container  {
     display: flex;
+    align-items: center;
+  }
+
+  .elevator__content {
+    display: flex;
+    align-items: center;
   }
 
 
