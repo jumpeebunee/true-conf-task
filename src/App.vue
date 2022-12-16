@@ -23,6 +23,7 @@
         @removeFloor="removeFloor"
         :unActive="unActive"
         :floors="floors"
+        :current="current"
       />
     </div>
   </main>
@@ -65,9 +66,7 @@ export default {
       localStorage.setItem('floors', this.floors);
     },
     removeFloor() {
-      if (this.floors === this.current) {
-        this.pushToQueue(this.floors - 1);
-      }
+      if (this.floors === this.current) return;
       this.floors -= 1;
       localStorage.setItem('floors', this.floors);
     }
