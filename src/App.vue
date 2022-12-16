@@ -62,6 +62,10 @@ export default {
       localStorage.setItem('current', this.current);
     },
     addFloor() {
+      if (this.floors >= 30) {
+        alert('Слишком много этажей :)');
+        return;
+      }
       this.floors += 1;
       localStorage.setItem('floors', this.floors);
     },

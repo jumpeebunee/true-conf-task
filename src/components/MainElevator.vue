@@ -3,7 +3,7 @@
         <li v-for="floor in floors" :key="floor" class="floor">{{floor}}</li>
         <div
           :style="{'bottom': `${(current - 1)* 216}px`,
-          'transition-duration': `${time.toString()[0]}s`}"
+          'transition-duration': `${time / 1000}s`}"
           :class="{'elevator elevator-animation': isDoors, 'elevator': !isDoors}"
         >
         <div class="floor__panel">
